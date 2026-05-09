@@ -12,7 +12,7 @@
 
 
 ```git
-git clone https://github.com/CoolyDucks/WhistlerLang
+git clone https://github.com/TheDevin-labs/WhistlerLang
 ```
 2. Create a new branch for your feature or fix
 
