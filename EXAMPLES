@@ -1,0 +1,14 @@
+say "EXAMPLES"
+let user = "Alice"
+say "Welcome " + user + " to Syntexly That Beautiful"
+time.print
+time.set "{date} {hou}:{min}:{sec}" "ms"
+time.print
+let score = 85
+if score >= 90
+    say "Grade: A"
+elif score >= 80
+    say "Grade: B"
+else
+    say "Grade: C or below"
+end
