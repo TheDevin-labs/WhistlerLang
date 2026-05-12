@@ -1,110 +1,21 @@
-
-# Contributing to WhistlerLang 🐧🦆
- 
-- Cheers for considering a contribution! This guide explains how to safely and effectively contribute to WhistlerLang.
+#Contributing to WhistlerLang
 
 
----
-
-# How to Contribute
-
-1. Fork the repository
+Thank you for your interest in contributing to WhistlerLang. To maintain the technical integrity of Devin’ Labs projects, all contributors must adhere to the following protocols.
 
 
-```git
-git clone https://github.com/TheDevin-labs/WhistlerLang
-```
-2. Create a new branch for your feature or fix
+- 1. Technical Standards
+Primary Language: All core logic must be implemented in Go (Golang).
+Architecture: We have transitioned to a fresh architecture. Do not attempt to integrate or reference deprecated legacy code from previous iterations.
+Dependency Management: Ensure all modules are correctly managed via go.mod.
 
-
-
-git checkout -b feature/awesome-feature
-
-3. Make your changes in source/, examples/, or docs/
-
-
-
-Keep say as the only exception to strong typing.
-
-Avoid breaking the REPL commands.
-
-Update examples in examples/ folder if necessary.
-
-
-4. Test your changes
-
-
-
-Run the REPL or build scripts to ensure everything works:
-
-```
-./build.sh
-./build/WhistlerLang-linux-amd64 (or aarch64... anything)
-```
-
-5. Commit with clear messages
-
-
-````
-git add .
-git commit -m "Add feature: improved time module"
-````
-6. Push and create a Pull Request
-
-
-
-git push origin feature/awesome-feature
-
-Describe your changes clearly.
-
-Include examples if your contribution affects scripts or REPL behaviour.
-
-
-
----
-
-Guidelines
-
-Maintain strong typing rules, except for say.
-
-Do not remove or rename original authors in code or examples.
-
-Avoid introducing bugs that break other platforms.
-
-Keep REPL output predictable.
-
-Document your changes if they affect usage or examples.
-
-
-
----
-
-Reporting Issues
-
-If you spot a bug or have a feature request, please open an issue here:
-
-https://github.com/CoolyDucks/WhistlerLang/issues
-
-Include:
-
-Version of WhistlerLang
-
-Steps to reproduce the bug
-
-Expected vs actual behaviour
-
-
-
----
-
-Code of Conduct
-
-Be respectful and collaborative. Contributions are welcome from everyone, no matter their experience.
-
-
----
-
-Thanks ever so much for helping make WhistlerLang better!
-
-
----
+- 2. Development Workflow
+Synchronisation: Before commencing any work, ensure your local environment is synchronised with the official repository using the Makefile (Option 4).
+Modular Design: Code must be modular. Ensure that Lexers, Parsers, and Evaluators remain distinct and well-documented.
+Build Verification: Contributions that fail to compile via the provided Makefile will be summarily rejected.
+- 3. Pull Request Process
+Briefly describe the changes and the rationale behind them.
+Ensure that no redundant binaries or temporary build files are included in the commit.
+Avoid the use of automated AI code generation if the output is not thoroughly verified and debugged against our current architecture.
+- 4. Code of Conduct
+Maintain a professional demeanour within the Zulip server and GitHub discussions. Technical excellence and clear communication are the pillars of this laboratory.
