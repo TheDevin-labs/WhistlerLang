@@ -1,4 +1,4 @@
-#Contributing to WhistlerLang
+# Contributing to WhistlerLang
 
 
 Thank you for your interest in contributing to WhistlerLang. To maintain the technical integrity of Devin’ Labs projects, all contributors must adhere to the following protocols.
