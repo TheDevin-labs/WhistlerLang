@@ -32,10 +32,10 @@ say std(measurements)    -- 0.81
 
 ## Getting started
 
-WhistlerLang files use the `.wl` extension. Run a program with:
+WhistlerLang files use the `.wh` extension. Run a program with:
 
 ```
-whistler run myscript.wl
+wl
 ```
 
 ---
