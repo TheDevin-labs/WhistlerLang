@@ -1,0 +1,780 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WhistlerLang 26.0 — Documentation</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;1,400&family=Syne:wght@400;600;700;800&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0d0f12;
+    --bg2: #13161b;
+    --bg3: #1a1e25;
+    --border: rgba(255,255,255,0.07);
+    --border2: rgba(255,255,255,0.13);
+    --text: #e8ecf0;
+    --muted: #7a8494;
+    --accent: #5b9cf6;
+    --accent2: #38d9a9;
+    --accent3: #f7c843;
+    --accent4: #f06292;
+    --keyword: #c792ea;
+    --string: #c3e88d;
+    --comment: #546e7a;
+    --number: #f78c6c;
+    --fn: #82aaff;
+    --op: #89ddff;
+    --sidebar-w: 260px;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    display: flex;
+    min-height: 100vh;
+    font-size: 15px;
+    line-height: 1.7;
+  }
+
+  /* ── sidebar ── */
+  nav {
+    width: var(--sidebar-w);
+    min-width: var(--sidebar-w);
+    background: var(--bg2);
+    border-right: 1px solid var(--border);
+    padding: 2rem 0;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .nav-logo {
+    padding: 0 1.5rem 1.5rem;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 0.5rem;
+  }
+
+  .nav-logo .lang-name {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.25rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .nav-logo .version {
+    font-size: 11px;
+    color: var(--muted);
+    font-family: 'IBM Plex Mono', monospace;
+    letter-spacing: 0.08em;
+    margin-top: 2px;
+  }
+
+  .nav-section-label {
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding: 1rem 1.5rem 0.25rem;
+  }
+
+  nav a {
+    display: block;
+    padding: 0.35rem 1.5rem;
+    color: #9aa5b4;
+    text-decoration: none;
+    font-size: 13.5px;
+    transition: color 0.15s, background 0.15s;
+    border-left: 2px solid transparent;
+  }
+
+  nav a:hover {
+    color: var(--text);
+    background: rgba(255,255,255,0.04);
+  }
+
+  nav a.active {
+    color: var(--accent);
+    border-left-color: var(--accent);
+    background: rgba(91,156,246,0.07);
+  }
+
+  /* ── main content ── */
+  main {
+    flex: 1;
+    max-width: 860px;
+    padding: 3rem 4rem;
+    overflow-x: hidden;
+  }
+
+  .hero {
+    margin-bottom: 4rem;
+    padding-bottom: 3rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .hero h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: 3rem;
+    font-weight: 800;
+    letter-spacing: -0.04em;
+    line-height: 1.1;
+    background: linear-gradient(135deg, #fff 0%, #9ab8e8 60%, var(--accent2) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 1rem;
+  }
+
+  .hero p {
+    font-size: 1rem;
+    color: #7a8494;
+    max-width: 560px;
+    line-height: 1.7;
+  }
+
+  .badge-row {
+    display: flex;
+    gap: 8px;
+    margin-top: 1.25rem;
+    flex-wrap: wrap;
+  }
+
+  .badge {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    padding: 3px 10px;
+    border-radius: 100px;
+    letter-spacing: 0.04em;
+  }
+
+  .badge-blue  { background: rgba(91,156,246,0.15); color: #7fb4f8; border: 1px solid rgba(91,156,246,0.25); }
+  .badge-teal  { background: rgba(56,217,169,0.12); color: #5dd8b4; border: 1px solid rgba(56,217,169,0.22); }
+  .badge-amber { background: rgba(247,200,67,0.12); color: #f7c843; border: 1px solid rgba(247,200,67,0.22); }
+
+  /* ── doc sections ── */
+  .doc-section {
+    margin-bottom: 3.5rem;
+    scroll-margin-top: 2rem;
+  }
+
+  .doc-section h2 {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.4rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-bottom: 0.5rem;
+    padding-bottom: 0.6rem;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+
+  .section-icon {
+    width: 28px;
+    height: 28px;
+    border-radius: 7px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    flex-shrink: 0;
+  }
+
+  .icon-blue   { background: rgba(91,156,246,0.2);  color: var(--accent); }
+  .icon-teal   { background: rgba(56,217,169,0.16); color: var(--accent2); }
+  .icon-amber  { background: rgba(247,200,67,0.15); color: var(--accent3); }
+  .icon-pink   { background: rgba(240,98,146,0.15); color: var(--accent4); }
+  .icon-purple { background: rgba(199,146,234,0.15); color: var(--keyword); }
+
+  .doc-section p {
+    color: #9aa5b4;
+    margin-bottom: 1rem;
+    font-size: 14.5px;
+  }
+
+  /* ── code block ── */
+  pre {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1.25rem 1.5rem;
+    overflow-x: auto;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 13px;
+    line-height: 1.75;
+    margin: 0.75rem 0 1.25rem;
+    position: relative;
+  }
+
+  pre .line-comment { color: var(--comment); font-style: italic; }
+  pre .kw   { color: var(--keyword); }
+  pre .str  { color: var(--string); }
+  pre .num  { color: var(--number); }
+  pre .fn   { color: var(--fn); }
+  pre .op   { color: var(--op); }
+  pre .id   { color: var(--text); }
+  pre .builtin { color: var(--accent2); }
+  pre .type { color: var(--accent3); }
+
+  /* inline code */
+  code {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12.5px;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid var(--border2);
+    border-radius: 4px;
+    padding: 1px 6px;
+    color: var(--accent2);
+  }
+
+  /* ── tables ── */
+  .ref-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13.5px;
+    margin: 0.75rem 0 1.5rem;
+  }
+
+  .ref-table thead tr {
+    border-bottom: 1px solid var(--border2);
+  }
+
+  .ref-table th {
+    text-align: left;
+    padding: 8px 12px;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .ref-table td {
+    padding: 8px 12px;
+    border-bottom: 1px solid var(--border);
+    color: #b0bac8;
+    vertical-align: top;
+  }
+
+  .ref-table td:first-child {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12.5px;
+    color: var(--accent2);
+  }
+
+  .ref-table td em {
+    color: var(--muted);
+    font-style: normal;
+    font-size: 12px;
+  }
+
+  .ref-table tr:hover td {
+    background: rgba(255,255,255,0.02);
+  }
+
+  /* ── type pills ── */
+  .type-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 10px;
+    margin: 0.75rem 0 1.5rem;
+  }
+
+  .type-card {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 0.85rem 1rem;
+  }
+
+  .type-card .type-name {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+
+  .type-card .type-example {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11.5px;
+    color: var(--muted);
+  }
+
+  .type-card .type-desc {
+    font-size: 12px;
+    color: #7a8494;
+    margin-top: 4px;
+  }
+
+  .t-int    .type-name { color: var(--accent); }
+  .t-float  .type-name { color: var(--accent2); }
+  .t-complex .type-name { color: var(--keyword); }
+  .t-bool   .type-name { color: var(--accent3); }
+  .t-string .type-name { color: var(--string); }
+
+  /* ── callout ── */
+  .callout {
+    border-left: 3px solid;
+    padding: 0.75rem 1rem;
+    border-radius: 0 8px 8px 0;
+    margin: 1rem 0;
+    font-size: 13.5px;
+  }
+
+  .callout-info  { border-color: var(--accent);  background: rgba(91,156,246,0.07); color: #8bbcf8; }
+  .callout-tip   { border-color: var(--accent2); background: rgba(56,217,169,0.07); color: #5dd8b4; }
+  .callout-warn  { border-color: var(--accent3); background: rgba(247,200,67,0.07); color: #f7c843; }
+
+  .callout strong { color: inherit; font-weight: 600; }
+
+  /* ── example program ── */
+  .full-example {
+    background: var(--bg2);
+    border: 1px solid var(--border2);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+
+  .full-example-header {
+    background: var(--bg3);
+    padding: 0.6rem 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    border-bottom: 1px solid var(--border);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  .dot { width: 10px; height: 10px; border-radius: 50%; }
+  .d-red { background: #f06292; }
+  .d-yellow { background: #f7c843; }
+  .d-green { background: #38d9a9; }
+
+  .full-example pre {
+    border: none;
+    border-radius: 0;
+    background: transparent;
+    margin: 0;
+  }
+
+  /* ── footer ── */
+  footer {
+    margin-top: 4rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--border);
+    font-size: 12.5px;
+    color: var(--muted);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  footer .footer-brand {
+    font-family: 'IBM Plex Mono', monospace;
+    color: #5a6478;
+  }
+</style>
+</head>
+<body>
+
+<!-- ── Sidebar ── -->
+<nav>
+  <div class="nav-logo">
+    <div class="lang-name">WhistlerLang</div>
+    <div class="version">v26.0 — TheDevin-labs</div>
+  </div>
+
+  <div class="nav-section-label">Getting started</div>
+  <a href="#intro" class="active">Introduction</a>
+  <a href="#variables">Variables</a>
+  <a href="#types">Data types</a>
+  <a href="#output">Output</a>
+
+  <div class="nav-section-label">Language</div>
+  <a href="#operators">Operators</a>
+  <a href="#arrays">Arrays</a>
+  <a href="#matrices">Matrices</a>
+  <a href="#functions">Functions</a>
+  <a href="#conditionals">Conditionals</a>
+  <a href="#loops">Loops</a>
+  <a href="#comments">Comments</a>
+
+  <div class="nav-section-label">Built-ins</div>
+  <a href="#math">Math functions</a>
+  <a href="#statistics">Statistics</a>
+  <a href="#linalg">Linear algebra</a>
+
+  <div class="nav-section-label">Examples</div>
+  <a href="#example">Full program</a>
+</nav>
+
+<!-- ── Main ── -->
+<main>
+
+  <!-- Hero -->
+  <div class="hero" id="intro">
+    <h1>WhistlerLang<br>Reference</h1>
+    <p>A dynamically typed, scientific scripting language designed for clarity and expressiveness. Built for data, math, and fast iteration.</p>
+    <div class="badge-row">
+      <span class="badge badge-blue">Dynamically typed</span>
+      <span class="badge badge-teal">Scientific built-ins</span>
+      <span class="badge badge-amber">v26.0 stable</span>
+    </div>
+  </div>
+
+  <!-- Variables -->
+  <section class="doc-section" id="variables">
+    <h2><span class="section-icon icon-blue">𝑥</span> Variables</h2>
+    <p>Declare variables with the <code>let</code> keyword. WhistlerLang is dynamically typed — no type annotation required.</p>
+    <pre><span class="kw">let</span> <span class="id">x</span>    <span class="op">=</span> <span class="num">10</span>          <span class="line-comment">-- integer</span>
+<span class="kw">let</span> <span class="id">pi</span>   <span class="op">=</span> <span class="num">3.14159</span>     <span class="line-comment">-- float</span>
+<span class="kw">let</span> <span class="id">name</span> <span class="op">=</span> <span class="str">"Whistler"</span>  <span class="line-comment">-- string</span>
+<span class="kw">let</span> <span class="id">flag</span> <span class="op">=</span> <span class="kw">true</span>        <span class="line-comment">-- boolean</span></pre>
+    <div class="callout callout-info">
+      <strong>Dynamic typing</strong> — the type of a variable is inferred at runtime. You can rebind a name to a different type, but this is generally discouraged for clarity.
+    </div>
+  </section>
+
+  <!-- Data types -->
+  <section class="doc-section" id="types">
+    <h2><span class="section-icon icon-teal">◈</span> Data types</h2>
+    <p>WhistlerLang has five primitive types:</p>
+    <div class="type-grid">
+      <div class="type-card t-int">
+        <div class="type-name">int</div>
+        <div class="type-example">42</div>
+        <div class="type-desc">Whole numbers</div>
+      </div>
+      <div class="type-card t-float">
+        <div class="type-name">float</div>
+        <div class="type-example">9.81</div>
+        <div class="type-desc">Decimal numbers</div>
+      </div>
+      <div class="type-card t-complex">
+        <div class="type-name">complex</div>
+        <div class="type-example">3+2i</div>
+        <div class="type-desc">Complex numbers</div>
+      </div>
+      <div class="type-card t-bool">
+        <div class="type-name">bool</div>
+        <div class="type-example">true / false</div>
+        <div class="type-desc">Boolean values</div>
+      </div>
+      <div class="type-card t-string">
+        <div class="type-name">string</div>
+        <div class="type-example">"hello"</div>
+        <div class="type-desc">Text in double quotes</div>
+      </div>
+    </div>
+    <pre><span class="kw">let</span> <span class="id">a</span> <span class="op">=</span> <span class="num">42</span>       <span class="line-comment">-- int</span>
+<span class="kw">let</span> <span class="id">b</span> <span class="op">=</span> <span class="num">9.81</span>     <span class="line-comment">-- float</span>
+<span class="kw">let</span> <span class="id">c</span> <span class="op">=</span> <span class="num">3+2i</span>     <span class="line-comment">-- complex</span>
+<span class="kw">let</span> <span class="id">d</span> <span class="op">=</span> <span class="kw">true</span>     <span class="line-comment">-- bool</span>
+<span class="kw">let</span> <span class="id">e</span> <span class="op">=</span> <span class="str">"science"</span> <span class="line-comment">-- string</span></pre>
+  </section>
+
+  <!-- Output -->
+  <section class="doc-section" id="output">
+    <h2><span class="section-icon icon-amber">▶</span> Output</h2>
+    <p>Use the <code>say</code> keyword to print any value to the console. No parentheses needed — <code>say</code> is a keyword, not a function.</p>
+    <pre><span class="kw">say</span> <span class="str">"Hello World"</span>   <span class="line-comment">-- Hello World</span>
+<span class="kw">say</span> <span class="id">x</span>              <span class="line-comment">-- prints value of x → 10</span>
+<span class="kw">say</span> <span class="num">2</span> <span class="op">+</span> <span class="num">2</span>          <span class="line-comment">-- evaluates then prints → 4</span>
+<span class="kw">say</span> <span class="id">flag</span>           <span class="line-comment">-- true</span></pre>
+  </section>
+
+  <!-- Operators -->
+  <section class="doc-section" id="operators">
+    <h2><span class="section-icon icon-blue">±</span> Operators</h2>
+    <p>WhistlerLang provides arithmetic, comparison, and logical operators.</p>
+
+    <table class="ref-table">
+      <thead><tr><th>Operator</th><th>Description</th><th>Example</th><th>Result</th></tr></thead>
+      <tbody>
+        <tr><td>+</td><td>Addition</td><td><em>10 + 5</em></td><td><em>15</em></td></tr>
+        <tr><td>-</td><td>Subtraction</td><td><em>10 - 5</em></td><td><em>5</em></td></tr>
+        <tr><td>*</td><td>Multiplication</td><td><em>10 * 5</em></td><td><em>50</em></td></tr>
+        <tr><td>/</td><td>Division</td><td><em>10 / 5</em></td><td><em>2</em></td></tr>
+        <tr><td>%</td><td>Modulo (remainder)</td><td><em>10 % 3</em></td><td><em>1</em></td></tr>
+        <tr><td>^</td><td>Exponentiation</td><td><em>2 ^ 8</em></td><td><em>256</em></td></tr>
+      </tbody>
+    </table>
+
+    <table class="ref-table">
+      <thead><tr><th>Operator</th><th>Description</th><th>Example</th><th>Result</th></tr></thead>
+      <tbody>
+        <tr><td>==</td><td>Equal to</td><td><em>5 == 5</em></td><td><em>true</em></td></tr>
+        <tr><td>!=</td><td>Not equal to</td><td><em>5 != 4</em></td><td><em>true</em></td></tr>
+        <tr><td>&lt;</td><td>Less than</td><td><em>3 &lt; 5</em></td><td><em>true</em></td></tr>
+        <tr><td>&gt;</td><td>Greater than</td><td><em>5 &gt; 3</em></td><td><em>true</em></td></tr>
+        <tr><td>&lt;=</td><td>Less than or equal</td><td><em>3 &lt;= 3</em></td><td><em>true</em></td></tr>
+        <tr><td>&gt;=</td><td>Greater than or equal</td><td><em>5 &gt;= 5</em></td><td><em>true</em></td></tr>
+      </tbody>
+    </table>
+
+    <table class="ref-table">
+      <thead><tr><th>Operator</th><th>Description</th><th>Example</th><th>Result</th></tr></thead>
+      <tbody>
+        <tr><td>and</td><td>Logical AND — both must be true</td><td><em>true and false</em></td><td><em>false</em></td></tr>
+        <tr><td>or</td><td>Logical OR — one must be true</td><td><em>true or false</em></td><td><em>true</em></td></tr>
+        <tr><td>not</td><td>Logical NOT — flips the value</td><td><em>not true</em></td><td><em>false</em></td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- Arrays -->
+  <section class="doc-section" id="arrays">
+    <h2><span class="section-icon icon-teal">[ ]</span> Arrays</h2>
+    <p>Arrays hold ordered sequences of values, declared with square brackets. Indexing starts at <code>0</code>.</p>
+    <pre><span class="kw">let</span> <span class="id">nums</span>  <span class="op">=</span> [<span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>, <span class="num">4</span>, <span class="num">5</span>]
+<span class="kw">let</span> <span class="id">words</span> <span class="op">=</span> [<span class="str">"hi"</span>, <span class="str">"world"</span>]
+
+<span class="kw">let</span> <span class="id">first</span> <span class="op">=</span> <span class="id">nums</span>[<span class="num">0</span>]   <span class="line-comment">-- 1  (first element)</span>
+<span class="kw">let</span> <span class="id">third</span> <span class="op">=</span> <span class="id">nums</span>[<span class="num">2</span>]   <span class="line-comment">-- 3  (third element)</span></pre>
+    <div class="callout callout-tip">
+      <strong>Zero-indexed</strong> — the first element is always at index <code>0</code>, the last at <code>len(arr) - 1</code>.
+    </div>
+  </section>
+
+  <!-- Matrices -->
+  <section class="doc-section" id="matrices">
+    <h2><span class="section-icon icon-purple">⊞</span> Matrices</h2>
+    <p>Matrices are two-dimensional arrays. Access elements with two indexes: <code>mat[row][col]</code>.</p>
+    <pre><span class="kw">let</span> <span class="id">mat</span> <span class="op">=</span> [[<span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>],
+           [<span class="num">4</span>, <span class="num">5</span>, <span class="num">6</span>],
+           [<span class="num">7</span>, <span class="num">8</span>, <span class="num">9</span>]]     <span class="line-comment">-- 3×3 matrix</span>
+
+<span class="kw">let</span> <span class="id">center</span> <span class="op">=</span> <span class="id">mat</span>[<span class="num">1</span>][<span class="num">1</span>]  <span class="line-comment">-- row 1, col 1 → 5</span>
+<span class="kw">let</span> <span class="id">corner</span> <span class="op">=</span> <span class="id">mat</span>[<span class="num">0</span>][<span class="num">2</span>]  <span class="line-comment">-- row 0, col 2 → 3</span></pre>
+  </section>
+
+  <!-- Functions -->
+  <section class="doc-section" id="functions">
+    <h2><span class="section-icon icon-blue">fn</span> Functions</h2>
+    <p>Declare functions with <code>fn</code>, a name, parameters in <code>()</code>, and <code>-&gt;</code>. The body goes in <code>{ }</code>. The last expression is automatically returned.</p>
+    <pre><span class="kw">fn</span> <span class="fn">add</span>(a, b) <span class="op">-&gt;</span> {
+    a <span class="op">+</span> b          <span class="line-comment">-- implicitly returned</span>
+}
+
+<span class="kw">fn</span> <span class="fn">square</span>(x) <span class="op">-&gt;</span> {
+    x <span class="op">*</span> x
+}
+
+<span class="kw">fn</span> <span class="fn">greet</span>(name) <span class="op">-&gt;</span> {
+    <span class="kw">say</span> <span class="str">"Hello"</span>
+    <span class="kw">say</span> <span class="id">name</span>
+}
+
+<span class="line-comment">-- Calling functions</span>
+<span class="kw">let</span> <span class="id">result</span> <span class="op">=</span> <span class="fn">add</span>(<span class="num">3</span>, <span class="num">4</span>)  <span class="line-comment">-- result = 7</span>
+<span class="kw">say</span> <span class="fn">square</span>(<span class="num">5</span>)          <span class="line-comment">-- 25</span>
+<span class="fn">greet</span>(<span class="str">"World"</span>)          <span class="line-comment">-- Hello \n World</span></pre>
+    <div class="callout callout-info">
+      <strong>Implicit return</strong> — no <code>return</code> keyword needed. The final expression in the function body is the return value.
+    </div>
+  </section>
+
+  <!-- Conditionals -->
+  <section class="doc-section" id="conditionals">
+    <h2><span class="section-icon icon-amber">?</span> Conditionals</h2>
+    <p>Use <code>if</code>, <code>elif</code>, and <code>else</code> for branching logic. <code>elif</code> is checked when the preceding <code>if</code> was false.</p>
+    <pre><span class="kw">let</span> <span class="id">score</span> <span class="op">=</span> <span class="num">85</span>
+
+<span class="kw">if</span> <span class="id">score</span> <span class="op">&gt;=</span> <span class="num">90</span> {
+    <span class="kw">say</span> <span class="str">"Grade: A"</span>
+} <span class="kw">elif</span> <span class="id">score</span> <span class="op">&gt;=</span> <span class="num">75</span> {
+    <span class="kw">say</span> <span class="str">"Grade: B"</span>   <span class="line-comment">-- this branch runs</span>
+} <span class="kw">elif</span> <span class="id">score</span> <span class="op">&gt;=</span> <span class="num">60</span> {
+    <span class="kw">say</span> <span class="str">"Grade: C"</span>
+} <span class="kw">else</span> {
+    <span class="kw">say</span> <span class="str">"Grade: F"</span>
+}</pre>
+  </section>
+
+  <!-- Loops -->
+  <section class="doc-section" id="loops">
+    <h2><span class="section-icon icon-teal">↻</span> Loops</h2>
+    <p>Two loop forms: <code>range(n)</code> to iterate <em>n</em> times (0 through n−1), or iterate directly over an array.</p>
+    <pre><span class="line-comment">-- range loop: i goes 0, 1, 2, 3, 4</span>
+<span class="kw">for</span> <span class="id">i</span> <span class="kw">in</span> <span class="builtin">range</span>(<span class="num">5</span>) {
+    <span class="kw">say</span> <span class="id">i</span>
+}
+
+<span class="line-comment">-- array loop</span>
+<span class="kw">let</span> <span class="id">data</span> <span class="op">=</span> [<span class="num">10</span>, <span class="num">20</span>, <span class="num">30</span>]
+<span class="kw">for</span> <span class="id">item</span> <span class="kw">in</span> <span class="id">data</span> {
+    <span class="kw">say</span> <span class="id">item</span>        <span class="line-comment">-- 10, 20, 30</span>
+}</pre>
+  </section>
+
+  <!-- Comments -->
+  <section class="doc-section" id="comments">
+    <h2><span class="section-icon icon-pink">--</span> Comments</h2>
+    <p>WhistlerLang supports single-line comments only. A comment begins with <code>--</code> and extends to the end of the line.</p>
+    <pre><span class="line-comment">-- This is a full-line comment</span>
+<span class="kw">let</span> <span class="id">x</span> <span class="op">=</span> <span class="num">10</span>  <span class="line-comment">-- This is an inline comment</span></pre>
+    <div class="callout callout-warn">
+      <strong>No block comments</strong> — multi-line comments are not supported. Prefix each line with <code>--</code>.
+    </div>
+  </section>
+
+  <!-- Math Functions -->
+  <section class="doc-section" id="math">
+    <h2><span class="section-icon icon-blue">∫</span> Math functions</h2>
+    <p>Always available with no imports required.</p>
+    <table class="ref-table">
+      <thead><tr><th>Function</th><th>Description</th><th>Example</th><th>Result</th></tr></thead>
+      <tbody>
+        <tr><td>sin(x)</td><td>Sine (radians)</td><td><em>sin(3.14)</em></td><td><em>≈ 0.0</em></td></tr>
+        <tr><td>cos(x)</td><td>Cosine (radians)</td><td><em>cos(0.0)</em></td><td><em>1.0</em></td></tr>
+        <tr><td>tan(x)</td><td>Tangent (radians)</td><td><em>tan(0.785)</em></td><td><em>≈ 1.0</em></td></tr>
+        <tr><td>sqrt(x)</td><td>Square root</td><td><em>sqrt(16.0)</em></td><td><em>4.0</em></td></tr>
+        <tr><td>log(x)</td><td>Natural logarithm (base e)</td><td><em>log(2.718)</em></td><td><em>≈ 1.0</em></td></tr>
+        <tr><td>exp(x)</td><td>e raised to power x</td><td><em>exp(1.0)</em></td><td><em>2.718</em></td></tr>
+        <tr><td>pow(x, y)</td><td>x to the power of y</td><td><em>pow(2.0, 10.0)</em></td><td><em>1024.0</em></td></tr>
+        <tr><td>abs(x)</td><td>Absolute value</td><td><em>abs(-42.0)</em></td><td><em>42.0</em></td></tr>
+        <tr><td>ceil(x)</td><td>Round up to nearest integer</td><td><em>ceil(3.2)</em></td><td><em>4.0</em></td></tr>
+        <tr><td>floor(x)</td><td>Round down to nearest integer</td><td><em>floor(3.8)</em></td><td><em>3.0</em></td></tr>
+        <tr><td>round(x)</td><td>Round to nearest integer</td><td><em>round(3.5)</em></td><td><em>4.0</em></td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- Statistics -->
+  <section class="doc-section" id="statistics">
+    <h2><span class="section-icon icon-teal">∑</span> Statistics functions</h2>
+    <p>These operate on arrays of numbers. No imports required.</p>
+    <pre><span class="kw">let</span> <span class="id">values</span> <span class="op">=</span> [<span class="num">4.0</span>, <span class="num">8.0</span>, <span class="num">15.0</span>, <span class="num">16.0</span>, <span class="num">23.0</span>, <span class="num">42.0</span>]</pre>
+    <table class="ref-table">
+      <thead><tr><th>Function</th><th>Description</th><th>Result</th></tr></thead>
+      <tbody>
+        <tr><td>mean(arr)</td><td>Average of all values</td><td><em>18.0</em></td></tr>
+        <tr><td>sum(arr)</td><td>Sum of all values</td><td><em>108.0</em></td></tr>
+        <tr><td>min(arr)</td><td>Smallest value</td><td><em>4.0</em></td></tr>
+        <tr><td>max(arr)</td><td>Largest value</td><td><em>42.0</em></td></tr>
+        <tr><td>median(arr)</td><td>Middle value when sorted</td><td><em>15.5</em></td></tr>
+        <tr><td>variance(arr)</td><td>Spread of the values</td><td><em>—</em></td></tr>
+        <tr><td>std(arr)</td><td>Standard deviation</td><td><em>—</em></td></tr>
+        <tr><td>len(arr)</td><td>Count of elements</td><td><em>6</em></td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- Linear Algebra -->
+  <section class="doc-section" id="linalg">
+    <h2><span class="section-icon icon-purple">⊗</span> Linear algebra</h2>
+    <p>Matrix and vector operations for scientific computing.</p>
+    <pre><span class="kw">let</span> <span class="id">v1</span> <span class="op">=</span> [<span class="num">1.0</span>, <span class="num">2.0</span>, <span class="num">3.0</span>]
+<span class="kw">let</span> <span class="id">v2</span> <span class="op">=</span> [<span class="num">4.0</span>, <span class="num">5.0</span>, <span class="num">6.0</span>]
+<span class="kw">let</span> <span class="id">m1</span> <span class="op">=</span> [[<span class="num">1.0</span>, <span class="num">2.0</span>], [<span class="num">3.0</span>, <span class="num">4.0</span>]]
+<span class="kw">let</span> <span class="id">m2</span> <span class="op">=</span> [[<span class="num">5.0</span>, <span class="num">6.0</span>], [<span class="num">7.0</span>, <span class="num">8.0</span>]]</pre>
+    <table class="ref-table">
+      <thead><tr><th>Function</th><th>Description</th><th>Notes</th></tr></thead>
+      <tbody>
+        <tr><td>dot(v1, v2)</td><td>Dot product of two vectors</td><td><em>result: 32.0</em></td></tr>
+        <tr><td>cross(v1, v2)</td><td>Cross product (3D vectors)</td><td><em>returns vector</em></td></tr>
+        <tr><td>norm(v)</td><td>Magnitude/length of a vector</td><td><em>result: 3.74</em></td></tr>
+        <tr><td>dot(m1, m2)</td><td>Matrix multiplication</td><td><em>also works on matrices</em></td></tr>
+        <tr><td>transpose(m)</td><td>Flip rows and columns</td><td><em>—</em></td></tr>
+        <tr><td>det(m)</td><td>Determinant of a square matrix</td><td><em>result: -2.0</em></td></tr>
+        <tr><td>inverse(m)</td><td>Inverse of a matrix</td><td><em>—</em></td></tr>
+        <tr><td>zeros(r, c)</td><td>Create r×c matrix of zeros</td><td><em>zeros(3,3)</em></td></tr>
+        <tr><td>ones(r, c)</td><td>Create r×c matrix of ones</td><td><em>ones(2,4)</em></td></tr>
+        <tr><td>identity(n)</td><td>n×n identity matrix</td><td><em>identity(3)</em></td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- Full Example -->
+  <section class="doc-section" id="example">
+    <h2><span class="section-icon icon-teal">✦</span> Full program</h2>
+    <p>A complete scientific program combining variables, functions, statistics, and conditionals.</p>
+    <div class="full-example">
+      <div class="full-example-header">
+        <span class="dot d-red"></span>
+        <span class="dot d-yellow"></span>
+        <span class="dot d-green"></span>
+        &nbsp; science_demo.wl
+      </div>
+      <pre><span class="kw">say</span> <span class="str">"=== WhistlerLang Science Demo ==="</span>
+
+<span class="line-comment">-- Store temperature measurements</span>
+<span class="kw">let</span> <span class="id">measurements</span> <span class="op">=</span> [<span class="num">98.6</span>, <span class="num">97.9</span>, <span class="num">99.1</span>, <span class="num">98.3</span>, <span class="num">100.2</span>]
+
+<span class="kw">say</span> <span class="str">"Measurements:"</span>
+<span class="kw">say</span> <span class="id">measurements</span>
+
+<span class="line-comment">-- Calculate statistics</span>
+<span class="kw">let</span> <span class="id">avg_temp</span>  <span class="op">=</span> <span class="builtin">mean</span>(<span class="id">measurements</span>)
+<span class="kw">let</span> <span class="id">deviation</span> <span class="op">=</span> <span class="builtin">std</span>(<span class="id">measurements</span>)
+
+<span class="kw">say</span> <span class="str">"Average temperature (F):"</span>
+<span class="kw">say</span> <span class="id">avg_temp</span>
+
+<span class="kw">say</span> <span class="str">"Standard deviation:"</span>
+<span class="kw">say</span> <span class="id">deviation</span>
+
+<span class="line-comment">-- Unit conversion function</span>
+<span class="kw">fn</span> <span class="fn">celsius</span>(f) <span class="op">-&gt;</span> {
+    (f <span class="op">-</span> <span class="num">32.0</span>) <span class="op">*</span> <span class="num">5.0</span> <span class="op">/</span> <span class="num">9.0</span>
+}
+
+<span class="kw">say</span> <span class="str">"Average in Celsius:"</span>
+<span class="kw">say</span> <span class="fn">celsius</span>(<span class="id">avg_temp</span>)
+
+<span class="line-comment">-- Status check</span>
+<span class="kw">if</span> <span class="id">avg_temp</span> <span class="op">&gt;</span> <span class="num">99.5</span> {
+    <span class="kw">say</span> <span class="str">"Status: Fever detected"</span>
+} <span class="kw">elif</span> <span class="id">avg_temp</span> <span class="op">&gt;</span> <span class="num">98.9</span> {
+    <span class="kw">say</span> <span class="str">"Status: Slightly elevated"</span>
+} <span class="kw">else</span> {
+    <span class="kw">say</span> <span class="str">"Status: Normal"</span>
+}</pre>
+    </div>
+  </section>
+
+  <footer>
+    <span class="footer-brand">WhistlerLang 26.0 — TheDevin-labs</span>
+    <span>Syntax Reference</span>
+  </footer>
+
+</main>
+
+<script>
+  const links = document.querySelectorAll('nav a');
+  const sections = document.querySelectorAll('.doc-section, .hero');
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        links.forEach(l => l.classList.remove('active'));
+        const id = e.target.id;
+        const active = document.querySelector(`nav a[href="#${id}"]`);
+        if (active) active.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-20% 0px -70% 0px' });
+
+  sections.forEach(s => observer.observe(s));
+</script>
+
+</body>
+</html>
