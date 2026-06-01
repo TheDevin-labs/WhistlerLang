@@ -349,6 +349,7 @@
     border: 1px solid var(--border2);
     border-radius: 12px;
     overflow: hidden;
+    margin-bottom: 2rem;
   }
 
   .full-example-header {
@@ -395,7 +396,6 @@
 </head>
 <body>
 
-<!-- ── Sidebar ── -->
 <nav>
   <div class="nav-logo">
     <div class="lang-name">WhistlerLang</div>
@@ -404,6 +404,7 @@
 
   <div class="nav-section-label">Getting started</div>
   <a href="#intro" class="active">Introduction</a>
+  <a href="#installation">Installation</a>
   <a href="#variables">Variables</a>
   <a href="#types">Data types</a>
   <a href="#output">Output</a>
@@ -424,15 +425,14 @@
 
   <div class="nav-section-label">Examples</div>
   <a href="#example">Full program</a>
+  <a href="#more-examples">More programs</a>
 </nav>
 
-<!-- ── Main ── -->
 <main>
 
-  <!-- Hero -->
   <div class="hero" id="intro">
     <h1>WhistlerLang<br>Reference</h1>
-    <p>A stronglly typed, scientific scripting language designed for clarity and expressiveness. Built for data, math, and fast iteration.</p>
+    <p>A strongly typed, scientific scripting language designed for clarity and expressiveness. Built for data, math, and fast iteration.</p>
     <div class="badge-row">
       <span class="badge badge-blue">Dynamically typed</span>
       <span class="badge badge-teal">Scientific built-ins</span>
@@ -440,7 +440,26 @@
     </div>
   </div>
 
-  <!-- Variables -->
+  <section class="doc-section" id="installation">
+    <h2><span class="section-icon icon-pink">↓</span> Installation</h2>
+    <p>Get the WhistlerLang environment set up using your terminal tool of choice.</p>
+    
+    <h3 style="font-size:14px; color:var(--text); margin-top:1rem; font-family:'Syne',sans-serif;">Option 1: Using Git</h3>
+    <pre><span class="id">git clone https://github.com/TheDevin-labs/WhistlerLang.git</span>
+<span class="id">cd WhistlerLang</span>
+<span class="id">go build -o whistler main.go</span></pre>
+
+    <h3 style="font-size:14px; color:var(--text); margin-top:1rem; font-family:'Syne',sans-serif;">Option 2: Using Wget</h3>
+    <pre><span class="id">wget https://github.com/TheDevin-labs/WhistlerLang/archive/refs/heads/main.zip</span>
+<span class="id">unzip main.zip</span>
+<span class="id">cd WhistlerLang-main</span></pre>
+
+    <h3 style="font-size:14px; color:var(--text); margin-top:1rem; font-family:'Syne',sans-serif;">Option 3: Using Curl</h3>
+    <pre><span class="id">curl -L -o whistlerlang.zip https://github.com/TheDevin-labs/WhistlerLang/archive/refs/heads/main.zip</span>
+<span class="id">unzip whistlerlang.zip</span>
+<span class="id">cd WhistlerLang-main</span></pre>
+  </section>
+
   <section class="doc-section" id="variables">
     <h2><span class="section-icon icon-blue">𝑥</span> Variables</h2>
     <p>Declare variables with the <code>let</code> keyword. WhistlerLang is dynamically typed — no type annotation required.</p>
@@ -453,7 +472,6 @@
     </div>
   </section>
 
-  <!-- Data types -->
   <section class="doc-section" id="types">
     <h2><span class="section-icon icon-teal">◈</span> Data types</h2>
     <p>WhistlerLang has five primitive types:</p>
@@ -491,7 +509,6 @@
 <span class="kw">let</span> <span class="id">e</span> <span class="op">=</span> <span class="str">"science"</span> <span class="line-comment">-- string</span></pre>
   </section>
 
-  <!-- Output -->
   <section class="doc-section" id="output">
     <h2><span class="section-icon icon-amber">▶</span> Output</h2>
     <p>Use the <code>say</code> keyword to print any value to the console. No parentheses needed — <code>say</code> is a keyword, not a function.</p>
@@ -501,7 +518,6 @@
 <span class="kw">say</span> <span class="id">flag</span>           <span class="line-comment">-- true</span></pre>
   </section>
 
-  <!-- Operators -->
   <section class="doc-section" id="operators">
     <h2><span class="section-icon icon-blue">±</span> Operators</h2>
     <p>WhistlerLang provides arithmetic, comparison, and logical operators.</p>
@@ -540,7 +556,6 @@
     </table>
   </section>
 
-  <!-- Arrays -->
   <section class="doc-section" id="arrays">
     <h2><span class="section-icon icon-teal">[ ]</span> Arrays</h2>
     <p>Arrays hold ordered sequences of values, declared with square brackets. Indexing starts at <code>0</code>.</p>
@@ -554,227 +569,8 @@
     </div>
   </section>
 
-  <!-- Matrices -->
   <section class="doc-section" id="matrices">
     <h2><span class="section-icon icon-purple">⊞</span> Matrices</h2>
     <p>Matrices are two-dimensional arrays. Access elements with two indexes: <code>mat[row][col]</code>.</p>
     <pre><span class="kw">let</span> <span class="id">mat</span> <span class="op">=</span> [[<span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>],
-           [<span class="num">4</span>, <span class="num">5</span>, <span class="num">6</span>],
-           [<span class="num">7</span>, <span class="num">8</span>, <span class="num">9</span>]]     <span class="line-comment">-- 3×3 matrix</span>
-
-<span class="kw">let</span> <span class="id">center</span> <span class="op">=</span> <span class="id">mat</span>[<span class="num">1</span>][<span class="num">1</span>]  <span class="line-comment">-- row 1, col 1 → 5</span>
-<span class="kw">let</span> <span class="id">corner</span> <span class="op">=</span> <span class="id">mat</span>[<span class="num">0</span>][<span class="num">2</span>]  <span class="line-comment">-- row 0, col 2 → 3</span></pre>
-  </section>
-
-  <!-- Functions -->
-  <section class="doc-section" id="functions">
-    <h2><span class="section-icon icon-blue">fn</span> Functions</h2>
-    <p>Declare functions with <code>fn</code>, a name, parameters in <code>()</code>, and <code>-&gt;</code>. The body goes in <code>{ }</code>. The last expression is automatically returned.</p>
-    <pre><span class="kw">fn</span> <span class="fn">add</span>(a, b) <span class="op">-&gt;</span> {
-    a <span class="op">+</span> b          <span class="line-comment">-- implicitly returned</span>
-}
-
-<span class="kw">fn</span> <span class="fn">square</span>(x) <span class="op">-&gt;</span> {
-    x <span class="op">*</span> x
-}
-
-<span class="kw">fn</span> <span class="fn">greet</span>(name) <span class="op">-&gt;</span> {
-    <span class="kw">say</span> <span class="str">"Hello"</span>
-    <span class="kw">say</span> <span class="id">name</span>
-}
-
-<span class="line-comment">-- Calling functions</span>
-<span class="kw">let</span> <span class="id">result</span> <span class="op">=</span> <span class="fn">add</span>(<span class="num">3</span>, <span class="num">4</span>)  <span class="line-comment">-- result = 7</span>
-<span class="kw">say</span> <span class="fn">square</span>(<span class="num">5</span>)          <span class="line-comment">-- 25</span>
-<span class="fn">greet</span>(<span class="str">"World"</span>)          <span class="line-comment">-- Hello \n World</span></pre>
-    <div class="callout callout-info">
-      <strong>Implicit return</strong> — no <code>return</code> keyword needed. The final expression in the function body is the return value.
-    </div>
-  </section>
-
-  <!-- Conditionals -->
-  <section class="doc-section" id="conditionals">
-    <h2><span class="section-icon icon-amber">?</span> Conditionals</h2>
-    <p>Use <code>if</code>, <code>elif</code>, and <code>else</code> for branching logic. <code>elif</code> is checked when the preceding <code>if</code> was false.</p>
-    <pre><span class="kw">let</span> <span class="id">score</span> <span class="op">=</span> <span class="num">85</span>
-
-<span class="kw">if</span> <span class="id">score</span> <span class="op">&gt;=</span> <span class="num">90</span> {
-    <span class="kw">say</span> <span class="str">"Grade: A"</span>
-} <span class="kw">elif</span> <span class="id">score</span> <span class="op">&gt;=</span> <span class="num">75</span> {
-    <span class="kw">say</span> <span class="str">"Grade: B"</span>   <span class="line-comment">-- this branch runs</span>
-} <span class="kw">elif</span> <span class="id">score</span> <span class="op">&gt;=</span> <span class="num">60</span> {
-    <span class="kw">say</span> <span class="str">"Grade: C"</span>
-} <span class="kw">else</span> {
-    <span class="kw">say</span> <span class="str">"Grade: F"</span>
-}</pre>
-  </section>
-
-  <!-- Loops -->
-  <section class="doc-section" id="loops">
-    <h2><span class="section-icon icon-teal">↻</span> Loops</h2>
-    <p>Two loop forms: <code>range(n)</code> to iterate <em>n</em> times (0 through n−1), or iterate directly over an array.</p>
-    <pre><span class="line-comment">-- range loop: i goes 0, 1, 2, 3, 4</span>
-<span class="kw">for</span> <span class="id">i</span> <span class="kw">in</span> <span class="builtin">range</span>(<span class="num">5</span>) {
-    <span class="kw">say</span> <span class="id">i</span>
-}
-
-<span class="line-comment">-- array loop</span>
-<span class="kw">let</span> <span class="id">data</span> <span class="op">=</span> [<span class="num">10</span>, <span class="num">20</span>, <span class="num">30</span>]
-<span class="kw">for</span> <span class="id">item</span> <span class="kw">in</span> <span class="id">data</span> {
-    <span class="kw">say</span> <span class="id">item</span>        <span class="line-comment">-- 10, 20, 30</span>
-}</pre>
-  </section>
-
-  <!-- Comments -->
-  <section class="doc-section" id="comments">
-    <h2><span class="section-icon icon-pink">--</span> Comments</h2>
-    <p>WhistlerLang supports single-line comments only. A comment begins with <code>--</code> and extends to the end of the line.</p>
-    <pre><span class="line-comment">-- This is a full-line comment</span>
-<span class="kw">let</span> <span class="id">x</span> <span class="op">=</span> <span class="num">10</span>  <span class="line-comment">-- This is an inline comment</span></pre>
-    <div class="callout callout-warn">
-      <strong>No block comments</strong> — multi-line comments are not supported. Prefix each line with <code>--</code>.
-    </div>
-  </section>
-
-  <!-- Math Functions -->
-  <section class="doc-section" id="math">
-    <h2><span class="section-icon icon-blue">∫</span> Math functions</h2>
-    <p>Always available with no imports required.</p>
-    <table class="ref-table">
-      <thead><tr><th>Function</th><th>Description</th><th>Example</th><th>Result</th></tr></thead>
-      <tbody>
-        <tr><td>sin(x)</td><td>Sine (radians)</td><td><em>sin(3.14)</em></td><td><em>≈ 0.0</em></td></tr>
-        <tr><td>cos(x)</td><td>Cosine (radians)</td><td><em>cos(0.0)</em></td><td><em>1.0</em></td></tr>
-        <tr><td>tan(x)</td><td>Tangent (radians)</td><td><em>tan(0.785)</em></td><td><em>≈ 1.0</em></td></tr>
-        <tr><td>sqrt(x)</td><td>Square root</td><td><em>sqrt(16.0)</em></td><td><em>4.0</em></td></tr>
-        <tr><td>log(x)</td><td>Natural logarithm (base e)</td><td><em>log(2.718)</em></td><td><em>≈ 1.0</em></td></tr>
-        <tr><td>exp(x)</td><td>e raised to power x</td><td><em>exp(1.0)</em></td><td><em>2.718</em></td></tr>
-        <tr><td>pow(x, y)</td><td>x to the power of y</td><td><em>pow(2.0, 10.0)</em></td><td><em>1024.0</em></td></tr>
-        <tr><td>abs(x)</td><td>Absolute value</td><td><em>abs(-42.0)</em></td><td><em>42.0</em></td></tr>
-        <tr><td>ceil(x)</td><td>Round up to nearest integer</td><td><em>ceil(3.2)</em></td><td><em>4.0</em></td></tr>
-        <tr><td>floor(x)</td><td>Round down to nearest integer</td><td><em>floor(3.8)</em></td><td><em>3.0</em></td></tr>
-        <tr><td>round(x)</td><td>Round to nearest integer</td><td><em>round(3.5)</em></td><td><em>4.0</em></td></tr>
-      </tbody>
-    </table>
-  </section>
-
-  <!-- Statistics -->
-  <section class="doc-section" id="statistics">
-    <h2><span class="section-icon icon-teal">∑</span> Statistics functions</h2>
-    <p>These operate on arrays of numbers. No imports required.</p>
-    <pre><span class="kw">let</span> <span class="id">values</span> <span class="op">=</span> [<span class="num">4.0</span>, <span class="num">8.0</span>, <span class="num">15.0</span>, <span class="num">16.0</span>, <span class="num">23.0</span>, <span class="num">42.0</span>]</pre>
-    <table class="ref-table">
-      <thead><tr><th>Function</th><th>Description</th><th>Result</th></tr></thead>
-      <tbody>
-        <tr><td>mean(arr)</td><td>Average of all values</td><td><em>18.0</em></td></tr>
-        <tr><td>sum(arr)</td><td>Sum of all values</td><td><em>108.0</em></td></tr>
-        <tr><td>min(arr)</td><td>Smallest value</td><td><em>4.0</em></td></tr>
-        <tr><td>max(arr)</td><td>Largest value</td><td><em>42.0</em></td></tr>
-        <tr><td>median(arr)</td><td>Middle value when sorted</td><td><em>15.5</em></td></tr>
-        <tr><td>variance(arr)</td><td>Spread of the values</td><td><em>—</em></td></tr>
-        <tr><td>std(arr)</td><td>Standard deviation</td><td><em>—</em></td></tr>
-        <tr><td>len(arr)</td><td>Count of elements</td><td><em>6</em></td></tr>
-      </tbody>
-    </table>
-  </section>
-
-  <!-- Linear Algebra -->
-  <section class="doc-section" id="linalg">
-    <h2><span class="section-icon icon-purple">⊗</span> Linear algebra</h2>
-    <p>Matrix and vector operations for scientific computing.</p>
-    <pre><span class="kw">let</span> <span class="id">v1</span> <span class="op">=</span> [<span class="num">1.0</span>, <span class="num">2.0</span>, <span class="num">3.0</span>]
-<span class="kw">let</span> <span class="id">v2</span> <span class="op">=</span> [<span class="num">4.0</span>, <span class="num">5.0</span>, <span class="num">6.0</span>]
-<span class="kw">let</span> <span class="id">m1</span> <span class="op">=</span> [[<span class="num">1.0</span>, <span class="num">2.0</span>], [<span class="num">3.0</span>, <span class="num">4.0</span>]]
-<span class="kw">let</span> <span class="id">m2</span> <span class="op">=</span> [[<span class="num">5.0</span>, <span class="num">6.0</span>], [<span class="num">7.0</span>, <span class="num">8.0</span>]]</pre>
-    <table class="ref-table">
-      <thead><tr><th>Function</th><th>Description</th><th>Notes</th></tr></thead>
-      <tbody>
-        <tr><td>dot(v1, v2)</td><td>Dot product of two vectors</td><td><em>result: 32.0</em></td></tr>
-        <tr><td>cross(v1, v2)</td><td>Cross product (3D vectors)</td><td><em>returns vector</em></td></tr>
-        <tr><td>norm(v)</td><td>Magnitude/length of a vector</td><td><em>result: 3.74</em></td></tr>
-        <tr><td>dot(m1, m2)</td><td>Matrix multiplication</td><td><em>also works on matrices</em></td></tr>
-        <tr><td>transpose(m)</td><td>Flip rows and columns</td><td><em>—</em></td></tr>
-        <tr><td>det(m)</td><td>Determinant of a square matrix</td><td><em>result: -2.0</em></td></tr>
-        <tr><td>inverse(m)</td><td>Inverse of a matrix</td><td><em>—</em></td></tr>
-        <tr><td>zeros(r, c)</td><td>Create r×c matrix of zeros</td><td><em>zeros(3,3)</em></td></tr>
-        <tr><td>ones(r, c)</td><td>Create r×c matrix of ones</td><td><em>ones(2,4)</em></td></tr>
-        <tr><td>identity(n)</td><td>n×n identity matrix</td><td><em>identity(3)</em></td></tr>
-      </tbody>
-    </table>
-  </section>
-
-  <!-- Full Example -->
-  <section class="doc-section" id="example">
-    <h2><span class="section-icon icon-teal">✦</span> Full program</h2>
-    <p>A complete scientific program combining variables, functions, statistics, and conditionals.</p>
-    <div class="full-example">
-      <div class="full-example-header">
-        <span class="dot d-red"></span>
-        <span class="dot d-yellow"></span>
-        <span class="dot d-green"></span>
-        &nbsp; science_demo.wh
-      </div>
-      <pre><span class="kw">say</span> <span class="str">"=== WhistlerLang Science Demo ==="</span>
-
-<span class="line-comment">-- Store temperature measurements</span>
-<span class="kw">let</span> <span class="id">measurements</span> <span class="op">=</span> [<span class="num">98.6</span>, <span class="num">97.9</span>, <span class="num">99.1</span>, <span class="num">98.3</span>, <span class="num">100.2</span>]
-
-<span class="kw">say</span> <span class="str">"Measurements:"</span>
-<span class="kw">say</span> <span class="id">measurements</span>
-
-<span class="line-comment">-- Calculate statistics</span>
-<span class="kw">let</span> <span class="id">avg_temp</span>  <span class="op">=</span> <span class="builtin">mean</span>(<span class="id">measurements</span>)
-<span class="kw">let</span> <span class="id">deviation</span> <span class="op">=</span> <span class="builtin">std</span>(<span class="id">measurements</span>)
-
-<span class="kw">say</span> <span class="str">"Average temperature (F):"</span>
-<span class="kw">say</span> <span class="id">avg_temp</span>
-
-<span class="kw">say</span> <span class="str">"Standard deviation:"</span>
-<span class="kw">say</span> <span class="id">deviation</span>
-
-<span class="line-comment">-- Unit conversion function</span>
-<span class="kw">fn</span> <span class="fn">celsius</span>(f) <span class="op">-&gt;</span> {
-    (f <span class="op">-</span> <span class="num">32.0</span>) <span class="op">*</span> <span class="num">5.0</span> <span class="op">/</span> <span class="num">9.0</span>
-}
-
-<span class="kw">say</span> <span class="str">"Average in Celsius:"</span>
-<span class="kw">say</span> <span class="fn">celsius</span>(<span class="id">avg_temp</span>)
-
-<span class="line-comment">-- Status check</span>
-<span class="kw">if</span> <span class="id">avg_temp</span> <span class="op">&gt;</span> <span class="num">99.5</span> {
-    <span class="kw">say</span> <span class="str">"Status: Fever detected"</span>
-} <span class="kw">elif</span> <span class="id">avg_temp</span> <span class="op">&gt;</span> <span class="num">98.9</span> {
-    <span class="kw">say</span> <span class="str">"Status: Slightly elevated"</span>
-} <span class="kw">else</span> {
-    <span class="kw">say</span> <span class="str">"Status: Normal"</span>
-}</pre>
-    </div>
-  </section>
-
-  <footer>
-    <span class="footer-brand">WhistlerLang 26.0 — TheDevin-labs</span>
-    <span>Syntax Reference</span>
-  </footer>
-
-</main>
-
-<script>
-  const links = document.querySelectorAll('nav a');
-  const sections = document.querySelectorAll('.doc-section, .hero');
-
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(e => {
-      if (e.isIntersecting) {
-        links.forEach(l => l.classList.remove('active'));
-        const id = e.target.id;
-        const active = document.querySelector(`nav a[href="#${id}"]`);
-        if (active) active.classList.add('active');
-      }
-    });
-  }, { rootMargin: '-20% 0px -70% 0px' });
-
-  sections.forEach(s => observer.observe(s));
-</script>
-
-</body>
-</html>
+           [<sp
