@@ -1,3 +1,3 @@
-module github.com/TheDevin-labs/whistlerlang
+module whistlerlang
 
 go 1.21
