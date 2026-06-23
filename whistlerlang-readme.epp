@@ -1,0 +1,198 @@
+%epp=0.2%
+@title "WhistlerLang"
+@header "WhistlerLang — README"
+@footer "Page [page]"
+@page 1
+@heading "WhistlerLang" {align=center,bold}
+@text "A statically typed, high-performance scientific language built for data, math, embedded systems, and critical computing. Compiles natively via LLVM IR on Linux, macOS, Windows, and Android."
+@code "let measurements: array = [98.6, 97.9, 99.1, 98.3, 100.2][newline]say mean(measurements)   -- 98.82[newline]say std(measurements)    -- 0.81"
+@space
+@heading "Table of contents" {bold}
+@bullet "Getting started"
+@bullet "Variables"
+@bullet "Data types"
+@bullet "Output"
+@bullet "Operators"
+@bullet "Arrays"
+@bullet "Matrices"
+@bullet "Bytes"
+@bullet "Functions"
+@bullet "Conditionals"
+@bullet "Loops"
+@bullet "Comments"
+@bullet "Error handling (Blockrock)"
+@bullet "Safety Bypass (_knownuse)"
+@bullet "CSV Data"
+@bullet "Built-in math"
+@bullet "Built-in statistics"
+@bullet "Built-in linear algebra"
+@bullet "Strict mode"
+@bullet "Full example"
+@newpage
+@page 2
+@heading "Getting started" {bold}
+@text "WhistlerLang files use the .wh extension. Compiles natively via LLVM IR. Run your code using the compiler:"
+@code "llvm science_demo.wh"
+@text "For critical systems, you can enforce compile-time safety checks using:"
+@code "llvm --strict science_demo.wh"
+@space
+@heading "Variables" {bold}
+@text "Declare variables with let. WhistlerLang supports optional static type annotations. In --strict mode, type annotations are strictly required on every variable."
+@code "-- with type annotation (required in strict mode)[newline]let x: int    = 10[newline]let pi: float  = 3.14159[newline]let name: string = \"WhistlerLang\"[newline]let flag: bool  = true[newline]-- without annotation (normal mode only)[newline]let y = 42[newline]let z = 9.81"
+@newpage
+@page 3
+@heading "Data types" {bold}
+@text "WhistlerLang has nine native types covering scientific, systems, and data use cases:"
+@table "Type|Example|Description"
+@row "int|42|Whole numbers"
+@row "float|9.81|Decimal numbers"
+@row "complex|3+2i|Complex numbers (real + imaginary)"
+@row "bool|true / false|Boolean values"
+@row "string|\"hello\"|Text in double quotes"
+@row "byte|0xFF / 255|Single byte (0–255)"
+@row "bytes|[0xFF, 0x00]|Byte array / raw buffer"
+@row "array|[1.0, 2.0, 3.0]|Ordered sequences of values"
+@row "matrix|[[1,2],[3,4]]|2D array for linear algebra"
+@newpage
+@page 4
+@heading "Output" {bold}
+@text "Use the say keyword to print to the console. No parentheses needed — say is a keyword, not a function. Works seamlessly with scalars, strings, arrays, and matrices."
+@code "say \"Hello World\"    -- Hello World[newline]say x                -- prints value of x[newline]say 2 + 2            -- evaluates then prints -> 4[newline]say nums             -- prints: [1, 2, 3][newline]say mat              -- prints: [[1, 2], [3, 4]]"
+@space
+@heading "Operators" {bold}
+@heading "Arithmetic" {bold}
+@table "Operator|Description|Example|Result"
+@row "+|Addition|10 + 5|15"
+@row "-|Subtraction|10 - 5|5"
+@row "*|Multiplication|10 * 5|50"
+@row "/|Division|10 / 5|2"
+@row "%|Modulo (remainder)|10 % 3|1"
+@row "^|Exponentiation|2 ^ 8|256"
+@newpage
+@page 5
+@heading "Comparison" {bold}
+@text "All return true or false."
+@table "Operator|Description|Example|Result"
+@row "==|Equal to|5 == 5|true"
+@row "!=|Not equal to|5 != 4|true"
+@row "<|Less than|3 < 5|true"
+@row ">|Greater than|5 > 3|true"
+@row "<=|Less than or equal|3 <= 3|true"
+@row ">=|Greater than or equal|5 >= 5|true"
+@space
+@heading "Logical" {bold}
+@table "Operator|Description|Example|Result"
+@row "and|Logical AND — both must be true|true and false|false"
+@row "or|Logical OR — one must be true|true or false|true"
+@row "not|Logical NOT — flips the value|not true|false"
+@newpage
+@page 6
+@heading "Arrays" {bold}
+@text "Ordered sequences of values declared with square brackets. Indexing is zero-indexed. You can run statistical and linear algebra functions directly on arrays."
+@code "let nums: array = [1.0, 2.0, 3.0, 4.0, 5.0][newline]let first = nums[0]   -- 1.0[newline]let third = nums[2]   -- 3.0[newline]say mean(nums)        -- 3.0"
+@space
+@heading "Matrices" {bold}
+@text "Matrices are first-class two-dimensional arrays. Access elements using mat[row][col]. All built-in linear algebra functions operate directly on this type."
+@code "let mat: matrix = [[1.0, 2.0, 3.0],[newline]                   [4.0, 5.0, 6.0],[newline]                   [7.0, 8.0, 9.0]][newline]let center = mat[1][1]   -- row 1, col 1 -> 5.0[newline]let corner = mat[0][2]   -- row 0, col 2 -> 3.0"
+@newpage
+@page 7
+@heading "Bytes" {bold}
+@text "WhistlerLang provides explicit low-level system types for byte and bytes buffers. Byte values can be declared via hex literals or decimals."
+@code "-- single byte[newline]let b1: byte = 0xFF    -- hex literal[newline]let b2: byte = 255     -- same value, decimal[newline]-- byte array / buffer[newline]let buf: bytes = [0x48, 0x65, 0x6C, 0x6C, 0x6F][newline]say buf   -- [72, 101, 108, 108, 111]"
+@quote "Note: An array containing only hex literals is automatically inferred as bytes by the compiler."
+@space
+@heading "Functions" {bold}
+@text "Declare with fn, parameters, and ->. The last expression in the body is implicitly returned without a return keyword. In strict mode, all parameter types and the return type must be explicitly annotated."
+@code "-- normal mode (no annotations required)[newline]fn add(a, b) -> {[newline]    a + b[newline]}[newline]-- strict mode (full annotations required)[newline]fn multiply(a: float, b: float) -> float {[newline]    a * b[newline]}[newline]fn celsius(f: float) -> float {[newline]    (f - 32.0) * 5.0 / 9.0[newline]}[newline]let result = add(3, 4)[newline]say multiply(6.0, 7.0)"
+@newpage
+@page 8
+@heading "Conditionals" {bold}
+@text "Use if, elif, and else for branching logic. You can chain multiple elif blocks."
+@code "let score: int = 85[newline]if score >= 90 {[newline]    say \"Grade: A\"[newline]} elif score >= 75 {[newline]    say \"Grade: B\"[newline]} elif score >= 60 {[newline]    say \"Grade: C\"[newline]} else {[newline]    say \"Grade: F\"[newline]}"
+@space
+@heading "Loops" {bold}
+@text "Range loop — iterates n times from 0 through n-1:"
+@code "for i in range(5) {[newline]    say i       -- 0, 1, 2, 3, 4[newline]}"
+@text "Array loop — iterates directly over elements:"
+@code "let data: array = [10.0, 20.0, 30.0][newline]for item in data {[newline]    say item    -- 10.0, 20.0, 30.0[newline]}"
+@space
+@heading "Comments" {bold}
+@text "WhistlerLang supports single-line comments only. A comment begins with -- and extends to the end of the line."
+@code "-- This is a full-line comment[newline]let x: int = 10   -- inline comment"
+@quote "Multi-line or block comments are not supported. Prefix each line with --."
+@newpage
+@page 9
+@heading "Error handling (Blockrock)" {bold}
+@text "WhistlerLang utilizes the blockrock system for handling runtime errors. Wrap risky operations inside a blockrock block. If a failure occurs, execution instantly jumps to the panic block."
+@code "blockrock {[newline]    let data = csv.open(\"sensors.csv\")[newline]    say data[newline]} panic {[newline]    say \"Failed to read sensor data\"[newline]}"
+@quote "Strict mode rule: Every blockrock statement must include a panic handler block, otherwise it will trigger a compile-time error."
+@space
+@heading "Safety Bypass (_knownuse)" {bold}
+@text "An escape hatch designed for expert low-level code. Wrapping code within a _knownuse block instructs the compiler to completely bypass strict type and error checking."
+@code "_knownuse {[newline]    let raw = 0xFF[newline]    let unsafe_val = 42[newline]    say raw[newline]}"
+@newpage
+@page 10
+@heading "CSV Data" {bold}
+@text "Built-in native CSV parsing with automatic cell type detection (checks for int first, then float, then string). CSV operations must always be safely wrapped inside a blockrock block."
+@code "blockrock {[newline]    let table = csv.open(\"data.csv\")   -- Reads entire file into a matrix[newline]    say table[newline]} panic {[newline]    say \"Could not open data.csv\"[newline]}"
+@table "Function|Returns|Description"
+@row "csv.open(path)|matrix|Reads the entire file where each row is an array of auto-detected values."
+@row "csv.line(path)|array of arrays|Reads line-by-line; yields one array per row for custom iteration loops."
+@space
+@heading "Built-in math" {bold}
+@text "Always available globally with zero imports required."
+@table "Function|Description|Example|Result"
+@row "sin(x)|Sine (radians)|sin(3.14)|≈ 0.0"
+@row "cos(x)|Cosine (radians)|cos(0.0)|1.0"
+@row "tan(x)|Tangent (radians)|tan(0.785)|≈ 1.0"
+@row "sqrt(x)|Square root|sqrt(16.0)|4.0"
+@row "log(x)|Natural logarithm|log(2.718)|≈ 1.0"
+@row "exp(x)|e raised to power x|exp(1.0)|2.718"
+@row "pow(x, y)|x to the power of y|pow(2.0, 10.0)|1024.0"
+@row "abs(x)|Absolute value|abs(-42.0)|42.0"
+@row "ceil(x)|Round up|ceil(3.2)|4.0"
+@row "floor(x)|Round down|floor(3.8)|3.0"
+@row "round(x)|Round to nearest|round(3.5)|4.0"
+@newpage
+@page 11
+@heading "Built-in statistics" {bold}
+@text "Statistics functions operate natively on arrays of numbers."
+@code "let values: array = [4.0, 8.0, 15.0, 16.0, 23.0, 42.0]"
+@table "Function|Description|Result"
+@row "mean(arr)|Average of all values|18.0"
+@row "sum(arr)|Sum of all values|108.0"
+@row "min(arr)|Smallest value|4.0"
+@row "max(arr)|Largest value|42.0"
+@row "median(arr)|Middle value when sorted|15.5"
+@row "variance(arr)|Spread of the values (Variance)|—"
+@row "std(arr)|Standard deviation|—"
+@row "len(arr)|Count of elements|6"
+@space
+@heading "Built-in linear algebra" {bold}
+@text "Matrix and vector operations for scientific operations. No imports required."
+@code "let v1: array  = [1.0, 2.0, 3.0][newline]let v2: array  = [4.0, 5.0, 6.0][newline]let m1: matrix = [[1.0, 2.0], [3.0, 4.0]][newline]let m2: matrix = [[5.0, 6.0], [7.0, 8.0]]"
+@table "Function|Description|Notes / Results"
+@row "dot(v1, v2)|Dot product of two vectors|32.0"
+@row "cross(v1, v2)|Cross product (3D vectors)|Returns array"
+@row "norm(v)|Magnitude of a vector|3.74"
+@row "dot(m1, m2)|Matrix multiplication|Also works on matrices"
+@row "transpose(m)|Flip rows and columns|Returns matrix"
+@row "det(m)|Determinant of a square matrix|-2.0"
+@row "inverse(m)|Inverse of a matrix|Returns matrix"
+@row "rank(m)|Rank of a matrix|—"
+@row "zeros(r, c)|r × c matrix of zeros|zeros(3,3)"
+@row "ones(r, c)|r × c matrix of ones|ones(2,4)"
+@row "identity(n)|n × n identity matrix|identity(3)"
+@newpage
+@page 12
+@heading "Strict mode" {bold}
+@text "Running your code with llvm --strict targets critical safety systems (embedded, kernels, aviation). In strict mode, all warnings are upgraded to explicit compile errors:"
+@bullet "Explicit Annotations: Every variable declaration must feature an explicit type block: let x: int = 10." {type=number}
+@bullet "Strict Signatures: Every function must declare its parameter types and return type explicitly." {type=number}
+@bullet "Guaranteed Blockrock: Every blockrock instance requires an accompanying panic handler block." {type=number}
+@bullet "Controlled Bypass: The _knownuse block acts as the singular escape hatch for raw operations." {type=number}
+@space
+@heading "Full example" {bold}
+@code "say \"=== WhistlerLang Science Demo ===\"[newline]-- temperature measurements[newline]let temps: array = [98.6, 97.9, 99.1, 98.3, 100.2][newline]say \"Measurements:\"[newline]say temps[newline]let avg: float = mean(temps)[newline]let dev: float = std(temps)[newline]say \"Average (F):\"[newline]say avg[newline]say \"Std deviation:\"[newline]say dev[newline]-- convert to Celsius[newline]fn celsius(f: float) -> float {[newline]    (f - 32.0) * 5.0 / 9.0[newline]}[newline]say \"Average in Celsius:\"[newline]say celsius(avg)[newline]-- load extra data from CSV[newline]blockrock {[newline]    let extra = csv.open(\"extra.csv\")[newline]    say extra[newline]} panic {[newline]    say \"No extra data found\"[newline]}[newline]-- status check[newline]if avg > 99.5 {[newline]    say \"Status: Fever\"[newline]} elif avg > 98.9 {[newline]    say \"Status: Slightly elevated\"[newline]} else {[newline]    say \"Status: Normal\"[newline]}"
+@space
+@text "WhistlerLang — TheDevin-labs" {align=center,italic}
